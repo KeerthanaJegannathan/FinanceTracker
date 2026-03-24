@@ -18,15 +18,17 @@ namespace FinanceTracker.Models
 
         public DateTime Date { get; set; }
 
-        public string Note { get; set; }
+        public string Note { get; set; } = String.Empty;    
 
         public TransactionType Type { get; set; }
 
-        public enum TransactionType
-        {
-            Income = 0,
-            Expense = 1
-        }
+      
+    }
+
+    public enum TransactionType
+    {
+        Income = 0,
+        Expense = 1
     }
 
 }

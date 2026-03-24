@@ -32,11 +32,12 @@ namespace FinanceTracker.Models
         /// </summary>
         public CategoryType Type {  get; set; }
 
-        public enum CategoryType
-        {
-            Income=0,
-            Expense=1,
-            Both=2
-        }
+      
+    }
+    public enum CategoryType
+    {
+        Income = 0,
+        Expense = 1,
+        Both = 2
     }
 }
