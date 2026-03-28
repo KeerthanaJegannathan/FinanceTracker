@@ -157,6 +157,7 @@ namespace FinanceTracker.Data
                 FROM   Categories
                 WHERE  Type = $type OR Type = 2
                 ORDER  BY Name ASC;";
+
             command.Parameters.AddWithValue("$type", (int)type);
 
             using var reader = command.ExecuteReader();
