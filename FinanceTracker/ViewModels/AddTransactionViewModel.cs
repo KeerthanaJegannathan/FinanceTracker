@@ -14,7 +14,7 @@ namespace FinanceTracker.ViewModels
     public class AddTransactionViewModel : BaseViewModel
     {
 
-        private readonly ITransactionRepository _transactionrepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly Action _onSaved;
         private readonly Transaction? _existingTransaction;
@@ -29,13 +29,13 @@ namespace FinanceTracker.ViewModels
 
         //Constructor
 
-        public AddTransactionViewModel(ITransactionRepository transactionrepository, ICategoryRepository categoryrepository
+        public AddTransactionViewModel(ITransactionRepository transactionRepository, ICategoryRepository categoryRepository
             , Action onSaved,  Transaction? existingTransaction = null)
         {
-            transactionrepository = _transactionrepository;
-            categoryrepository = _categoryRepository;
+            _transactionRepository = transactionRepository;
+            _categoryRepository = categoryRepository;
             _onSaved = onSaved;
-            existingTransaction=_existingTransaction;   
+            _existingTransaction=existingTransaction;   
 
             Categories = new ObservableCollection<Category>();
             TransactionTypes = new ObservableCollection<TransactionType>
@@ -171,15 +171,15 @@ namespace FinanceTracker.ViewModels
             {
                 _existingTransaction.Amount = Amount;
                 _existingTransaction.Note = Note;
-                _existingTransaction.CategoryId = SelectedCategory.Id;
+                _existingTransaction.CategoryId = SelectedCategory!.Id;
                 _existingTransaction.Type = Type;
                 _existingTransaction.Date = Date;
 
-                _transactionrepository.Update(_existingTransaction);
+                _transactionRepository.Update(_existingTransaction);
             }
             else
             {
-                _transactionrepository.Add(new Transaction
+                _transactionRepository.Add(new Transaction
                 {
                     Amount = Amount,
                     CategoryId = SelectedCategory!.Id,

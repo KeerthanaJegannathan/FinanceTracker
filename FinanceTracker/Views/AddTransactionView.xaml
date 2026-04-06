@@ -14,7 +14,6 @@
         Background="#F5F7FA">
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolYoVisibilityConverter"/>
         <!-- Reusable label style -->
         <Style x:Key="FieldLabel" TargetType="TextBlock">
             <Setter Property="FontSize"     Value="13"/>
@@ -67,7 +66,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2">
-            <TextBlock Style="{StaticResource FieldLabel}" Text="Amount"/>
+            <TextBlock Style="{StaticResource FieldLabel}" Text="Amount (£)"/>
             <TextBox Text="{Binding Amount, StringFormat={}{0:N2},
                 UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
         </StackPanel>
@@ -75,7 +74,7 @@
         <StackPanel Grid.Row="4">
             <TextBlock Style="{StaticResource FieldLabel}" Text="Category"/>
             <ComboBox Style="{StaticResource InputControl}" ItemsSource="{Binding Categories}" 
-            SelectedItem="{Binding SelctedCategory, Mode=TwoWay}" DisplayMemberPath="{Binding Name}"/>
+            SelectedItem="{Binding SelctedCategory, Mode=TwoWay}" DisplayMemberPath="Name"/>
         </StackPanel>
 
         <StackPanel Grid.Row="6">
