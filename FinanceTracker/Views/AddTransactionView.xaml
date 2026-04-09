@@ -145,13 +145,11 @@
 
             <Button Grid.Column="2"
                     Content="{Binding SaveButtonLabel}"
-                    Command="{Binding SaveCommand}"
-                    Style="{StaticResource DialogButton}">
+                    Command="{Binding SaveCommand}">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource DialogButton}">
                         <Setter Property="Background" Value="#3498DB"/>
                         <Setter Property="Foreground" Value="White"/>
-                        <!-- Auto grey-out when SaveCommand.CanExecute = false -->
                         <Style.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Background" Value="#BDC3C7"/>
@@ -162,4 +160,5 @@
                 </Button.Style>
             </Button>
         </Grid>
+    </Grid>
 </Window>

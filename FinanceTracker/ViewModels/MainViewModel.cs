@@ -5,13 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FinanceTracker.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private ITransactionRepository _transactionRepoitory;
+        private ITransactionRepository _transactionRepository;
         private ICategoryRepository _categoryRepository;
 
         private string _selectedFilterCategory = "All";
@@ -20,11 +21,11 @@ namespace FinanceTracker.ViewModels
 
         public MainViewModel(ITransactionRepository transactionRepo, ICategoryRepository categoryRepo)
         {
-            _transactionRepoitory = transactionRepo;
+            _transactionRepository = transactionRepo;
             _categoryRepository = categoryRepo;
             Transactions = new ObservableCollection<Transaction>(); 
             FilteredTransactions = new ObservableCollection<Transaction>();
-            FilteredCategories = new ObservableCollection<string>();
+            FilterCategories = new ObservableCollection<string>();
 
             AddCommand = new RelayCommand(_ => OpenAddDialog());
             EditCommand = new RelayCommand(_ => OpenEditDialog(), _ => SelectedTransaction != null);
@@ -93,30 +94,90 @@ namespace FinanceTracker.ViewModels
 
             IsLoading = false;
         }
+
+        private void RefreshSummary()
+        {
+            OnPropertyChanged(nameof(TotalIncome));
+            OnPropertyChanged(nameof(TotalExpenses));
+            OnPropertyChanged(nameof(NetBalance));
+            OnPropertyChanged(nameof(IsOverBudget));
+        }
+
+        private void RebuildFilterCategories()
+        {
+            var current = SelectedFilterCategory;
+
+            FilterCategories.Clear();
+            FilterCategories.Add("All");
+            foreach (var cat in _categoryRepository.GetAll())
+                FilterCategories.Add(cat.Name);
+
+            SelectedFilterCategory = FilterCategories.Contains(current) ? current : "All";
+        }
+
+
+        private void ApplyFilter()
+        {
+            FilteredTransactions.Clear();
+
+            IEnumerable<Transaction> filtered = SelectedFilterCategory == "All"
+                ? Transactions
+                : Transactions.Where(t => t.CategoryName == SelectedFilterCategory);
+
+            foreach (var t in filtered)
+                FilteredTransactions.Add(t);
+        }
+
+
         private void OpenAddDialog()
         {
-            throw new NotImplementedException();
+            var vm = new AddTransactionViewModel(
+                _transactionRepository,
+                _categoryRepository,
+                onSaved: () => LoadTransactions());
+
+            var dialog = new Views.AddTransactionView
+            {
+                DataContext = vm,
+                Owner = Application.Current.MainWindow
+            };
+            dialog.ShowDialog();
         }
 
         private void DeleteSelected()
         {
-            throw new NotImplementedException();
+
+            if (SelectedTransaction == null) return;
+
+            _transactionRepository.Delete(SelectedTransaction.Id);
+            Transactions.Remove(SelectedTransaction);
+            SelectedTransaction = null;
+
+            ApplyFilter();
+            RefreshSummary();
         }
 
         private void OpenEditDialog()
         {
-            throw new NotImplementedException();
-        }
+            if (SelectedTransaction == null) return;
 
-        private void ApplyFilter()
-        {
-            throw new NotImplementedException();
-        }
+            var vm = new AddTransactionViewModel(
+                _transactionRepository,
+                _categoryRepository,
+                onSaved: () => LoadTransactions(),
+                existingTransaction: SelectedTransaction);
 
+            var dialog = new Views.AddTransactionView
+            {
+                DataContext = vm,
+                Owner = Application.Current.MainWindow
+            };
+            dialog.ShowDialog();
+        }
         //Collections
 
         public ObservableCollection<Transaction> Transactions { get; }
-        public ObservableCollection<string> FilteredCategories { get; }
+        public ObservableCollection<string> FilterCategories { get; }
 
         public ObservableCollection<Transaction> FilteredTransactions {  get; }
 

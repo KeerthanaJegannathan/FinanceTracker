@@ -34,7 +34,7 @@ namespace FinanceTracker.Data
            var command= connection.CreateCommand();
             command.CommandText = @"
               CREATE TABLE IF NOT EXISTS Categories(
-              Id INTEGER PRIMARY KEY AUTO INCREMENT,
+              Id INTEGER PRIMARY KEY AUTOINCREMENT,
               Name TEXT NOT NULL UNIQUE,
               Type INTEGER NOT NULL DEFAULT 2,
               Color TEXT NOT NULL DEFAULT '#95A5A6',
@@ -50,11 +50,11 @@ namespace FinanceTracker.Data
             var command= connection.CreateCommand();
             command.CommandText = @"
                CREATE TABLE IF NOT EXISTS Transactions(
-                 Id INTEGER PRIMARY KEY AUTO INCREMENT,
+                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                  Amount REAL NOT NULL,
                  CategoryId INTEGER NOT NULL,
                  Date TEXT NOT NULL,
-                 Note TEXT NOT NULL '',
+                 Note TEXT NOT NULL DEFAULT '',
                  Type INTEGER NOT NULL,
                 
                  FOREIGN KEY (CategoryId) REFERENCES Categories(Id)

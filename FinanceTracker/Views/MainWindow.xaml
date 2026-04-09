@@ -5,8 +5,209 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinanceTracker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Personal Finance Tracker"
+        Height="700" Width="1000"
+        MinHeight="600" MinWidth="800"
+        Background="#F5F7FA">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!-- Total Income -->
+            <Border Grid.Column="0"
+                    Background="#27AE60" CornerRadius="8"
+                    Margin="0,0,8,0" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Total Income"
+                               Foreground="White" FontSize="12" Opacity="0.85"/>
+                    <TextBlock Text="{Binding TotalIncome, StringFormat='£{0:N2}'}"
+                               Foreground="White" FontSize="24" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+            <!-- Total Expenses-->
+            <Border Grid.Column="1"
+                    Background="#E74C3C" CornerRadius="8"
+                    Margin="4,0" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Total Expenses"
+                               Foreground="White" FontSize="12" Opacity="0.85"/>
+                    <TextBlock Text="{Binding TotalExpenses, StringFormat='£{0:N2}'}"
+                               Foreground="White" FontSize="24" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2"
+                    CornerRadius="8" Margin="8,0,0,0" Padding="16">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#2C3E50"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsOverBudget}" Value="True">
+                                <Setter Property="Background" Value="#C0392B"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel>
+                    <TextBlock Text="Net Balance"
+                               Foreground="White" FontSize="12" Opacity="0.85"/>
+                    <TextBlock Text="{Binding NetBalance, StringFormat='£{0:N2}'}"
+                               Foreground="White" FontSize="24" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="Filter by category:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"
+                       Foreground="#555" FontSize="13"/>
+
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding FilterCategories}"
+                      SelectedItem="{Binding SelectedFilterCategory}"
+                      Height="32"/>
+
+            <!-- Visible only while IsLoading = true -->
+            <TextBlock Grid.Column="2"
+                       Text="Loading..."
+                       Visibility="{Binding IsLoading,
+                           Converter={StaticResource BoolToVisibility}}"
+                       VerticalAlignment="Center"
+                       Margin="12,0,0,0"
+                       Foreground="#888" FontStyle="Italic"/>
+
+            <!-- Transaction count -->
+            <TextBlock Grid.Column="3"
+                       VerticalAlignment="Center"
+                       Foreground="#888" FontSize="12">
+                <Run Text="{Binding FilteredTransactions.Count, Mode=OneWay}"/>
+                <Run Text=" transaction(s)"/>
+            </TextBlock>
+        </Grid>
+
+        <Border Grid.Row="4"
+                Background="White" CornerRadius="8"
+                BorderBrush="#E0E0E0" BorderThickness="1">
+            <ListView ItemsSource="{Binding FilteredTransactions}"
+                      SelectedItem="{Binding SelectedTransaction}"
+                      BorderThickness="0" Background="Transparent">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Date"     Width="110"
+                            DisplayMemberBinding="{Binding Date, StringFormat='dd/MM/yyyy'}"/>
+                        <GridViewColumn Header="Type"     Width="80"
+                            DisplayMemberBinding="{Binding Type}"/>
+                        <GridViewColumn Header="Category" Width="130"
+                            DisplayMemberBinding="{Binding CategoryName}"/>
+                        <GridViewColumn Header="Amount"   Width="110"
+                            DisplayMemberBinding="{Binding Amount, StringFormat='£{0:N2}'}"/>
+                        <GridViewColumn Header="Note"   Width="110"
+                            DisplayMemberBinding="{Binding Note}"/>
+                    </GridView>
+                </ListView.View>
+
+                <!-- Empty state shown when FilteredTransactions is empty -->
+                <ListView.Style>
+                    <Style TargetType="ListView">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FilteredTransactions.Count}" Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock
+                                                Text="No transactions yet.Click 'Add' to get started!"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Foreground="#AAA" FontSize="14"
+                                                Margin="0,40,0,0"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
+            </ListView>
+        </Border>
+        <StackPanel Grid.Row="5"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,12,0,0">
+
+            <!-- Refresh -->
+            <Button Content="Refresh"
+                    Command="{Binding RefreshCommand}"
+                    Width="110" Height="36" Margin="0,0,8,0"
+                    Background="#95A5A6" Foreground="White"
+                    BorderThickness="0" FontSize="13"/>
+
+            <!-- Add -->
+            <Button Content="Add"
+                    Command="{Binding AddCommand}"
+                    Width="120" Height="36" Margin="0,0,8,0"
+                    Background="#3498DB" Foreground="White"
+                    BorderThickness="0" FontSize="13"/>
+
+            <!-- Edit Button -->
+            <Button Content="Edit"
+                    Command="{Binding EditCommand}"
+                    Width="120" Height="36" Margin="0,0,8,0"
+                    BorderThickness="0" FontSize="13">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#F39C12"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#BDC3C7"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <!-- Delete Button -->
+            <Button Content=" Delete"
+                    Command="{Binding DeleteCommand}"
+                    Width="120" Height="36"
+                    BorderThickness="0" FontSize="13">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#E74C3C"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#BDC3C7"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
 
     </Grid>
 </Window>
