@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FinanceTracker.Views"
          xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="420" Width="420"
+        Title="{Binding Title}" Height="440" Width="420"
         MinHeight="420" MinWidth="380"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
@@ -74,7 +74,7 @@
         <StackPanel Grid.Row="4">
             <TextBlock Style="{StaticResource FieldLabel}" Text="Category"/>
             <ComboBox Style="{StaticResource InputControl}" ItemsSource="{Binding Categories}" 
-            SelectedItem="{Binding SelctedCategory, Mode=TwoWay}" DisplayMemberPath="Name"/>
+            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" DisplayMemberPath="Name"/>
         </StackPanel>
 
         <StackPanel Grid.Row="6">

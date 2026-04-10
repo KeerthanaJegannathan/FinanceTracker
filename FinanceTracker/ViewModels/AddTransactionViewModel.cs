@@ -152,10 +152,10 @@ namespace FinanceTracker.ViewModels
             foreach (var category in loaded) 
                 Categories.Add(category);
 
-            
-            SelectedCategory = _existingTransaction!=null ? 
-                Categories.FirstOrDefault(c => c.Id == _existingTransaction.CategoryId) :
-                Categories.FirstOrDefault();
+            SelectedCategory = _existingTransaction != null
+              ? Categories.FirstOrDefault(c => c.Id == _existingTransaction.CategoryId)
+                ?? Categories.FirstOrDefault()
+              : Categories.FirstOrDefault();
         }
 
         private bool CanSave() => Amount > 0 && SelectedCategory != null;
@@ -164,7 +164,7 @@ namespace FinanceTracker.ViewModels
         {
             if (!CanSave())
             {
-                ValidationMessage = "Please enter a valida amount and select a category";
+                ValidationMessage = "Please enter a valid amount and select a category";
                 return;
             }
             if (_existingTransaction != null)

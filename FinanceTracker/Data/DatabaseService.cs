@@ -67,8 +67,8 @@ namespace FinanceTracker.Data
         {
             var command = connection.CreateCommand();
             command.CommandText = @"
-                INSERT OR IGNORE INTO Categories (Name, Type, Colour, IconName, IsDefault, CreatedAt) VALUES
-                --  Name              Type  Colour      Icon            IsDefault  CreatedAt
+                INSERT OR IGNORE INTO Categories (Name, Type, Color, IconName, IsDefault, CreatedAt) VALUES
+                --  Name              Type  Color      Icon            IsDefault  CreatedAt
                 ('Salary',           0,    '#27AE60',  'salary',        1,        date('now')),
                 ('Freelance',        0,    '#2ECC71',  'freelance',     1,        date('now')),
                 ('Investment',       0,    '#1ABC9C',  'investment',    1,        date('now')),
@@ -94,10 +94,10 @@ namespace FinanceTracker.Data
             var command= connection.CreateCommand();
             command.CommandText = @"
                  INSERT INTO Categories( Name, Type, Color, IconName, IsDefault, CreatedAt)
-                  VALUES ($name, $type, $colour, $iconName, 0, date('now'));";
+                  VALUES ($name, $type, $color, $iconName, 0, date('now'));";
             command.Parameters.AddWithValue("$name", category.Name);
             command.Parameters.AddWithValue("$type", (int)category.Type);
-            command.Parameters.AddWithValue("$colour", category.Color);
+            command.Parameters.AddWithValue("$color", category.Color);
             command.Parameters.AddWithValue("$iconName", category.IconName);
 
             command.ExecuteNonQuery();
@@ -114,7 +114,7 @@ namespace FinanceTracker.Data
 
             var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Name, Type, Colour, IconName, IsDefault, CreatedAt
+                SELECT Id, Name, Type, Color, IconName, IsDefault, CreatedAt
                 FROM   Categories
                 ORDER  BY Name ASC;";
 
@@ -132,7 +132,7 @@ namespace FinanceTracker.Data
 
             var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Name, Type, Colour, IconName, IsDefault, CreatedAt
+                SELECT Id, Name, Type, Color, IconName, IsDefault, CreatedAt
                 FROM   Categories
                 WHERE  Id = $id;";
             command.Parameters.AddWithValue("$id", id);
@@ -153,7 +153,7 @@ namespace FinanceTracker.Data
 
             // Return categories that match the type OR are marked as Both (2)
             command.CommandText = @"
-                SELECT Id, Name, Type, Colour, IconName, IsDefault, CreatedAt
+                SELECT Id, Name, Type, Color, IconName, IsDefault, CreatedAt
                 FROM   Categories
                 WHERE  Type = $type OR Type = 2
                 ORDER  BY Name ASC;";
@@ -209,7 +209,7 @@ namespace FinanceTracker.Data
 
 
         /// <summary>
-        /// Returns all transactions with CategoryName and CategoryColour
+        /// Returns all transactions with CategoryName and CategoryColor
         /// </summary>
         IEnumerable<Transaction> ITransactionRepository.GetAll()
         {
@@ -224,7 +224,7 @@ namespace FinanceTracker.Data
                        t.Amount,
                        t.CategoryId,
                        c.Name   AS CategoryName,
-                       c.Colour AS CategoryColour,
+                       c.Color AS CategoryColor,
                        t.Date,
                        t.Note,
                        t.Type
@@ -250,7 +250,7 @@ namespace FinanceTracker.Data
                        t.Amount,
                        t.CategoryId,
                        c.Name   AS CategoryName,
-                       c.Colour AS CategoryColour,
+                       c.Color AS CategoryColor,
                        t.Date,
                        t.Note,
                        t.Type
