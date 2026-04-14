@@ -1,10 +1,6 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Models;
 using FinanceTracker.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
 
 namespace FinanceTracker.Tests
 {
@@ -39,10 +35,8 @@ namespace FinanceTracker.Tests
             public void Delete(int id) { }
         }
 
-
         private static MainViewModel CreateVm(List<Transaction> transactions) =>
-            new(new MockTransactionRepository(transactions), new MockCategoryRepository());
-
+           new(new MockTransactionRepository(transactions), new MockCategoryRepository());
 
         [Fact]
         public void TotalIncome_SumsIncomeTransactionsOnly()
@@ -123,5 +117,6 @@ namespace FinanceTracker.Tests
 
             Assert.Equal(2, vm.FilteredTransactions.Count);
         }
+
     }
 }

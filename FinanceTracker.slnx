@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="FinanceTracker.Tests/FinanceTracker.Tests.csproj" Id="a0f83c13-ec8e-48b0-9248-6954e408dea6" />
   <Project Path="FinanceTracker/FinanceTracker.csproj" />
 </Solution>
