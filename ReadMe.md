@@ -198,6 +198,14 @@ so `SelectedCategory.Id` is available as the foreign key when saving.
 For a focused portfolio project, manual wiring in `App.xaml.cs` is clear and easy to explain.
 In a production app, `Microsoft.Extensions.DependencyInjection` would replace this.
 
+## Screenshot
+
+<img width="700" height="500" alt="AddTransaction" src="https://github.com/user-attachments/assets/34a89d1a-0432-4e19-a984-8b5725b23d55" />
+
+<img width="700" height="500" alt="Appilcation" src="https://github.com/user-attachments/assets/a177c34f-9401-4816-aadc-bdab4411ed5d" />
+
+<img width="700" height="500" alt="IsOverBudget" src="https://github.com/user-attachments/assets/10291ad1-4ffd-4177-9016-fedb58688dbd" />
+
 ## About
 
 Built as a portfolio project to demonstrate WPF and MVVM expertise during a career
