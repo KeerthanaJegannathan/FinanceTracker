@@ -2,7 +2,7 @@
 
 A desktop finance management application built with **WPF**, **C#**, and strict **MVVM architecture**.
 
-![.NET](https://img.shields.io/badge/.NET-6.0+-512BD4?style=flat&logo=dotnet)
+![.NET](https://img.shields.io/badge/.NET-10.0+-512BD4?style=flat&logo=dotnet)
 ![WPF](https://img.shields.io/badge/WPF-C%23-239120?style=flat&logo=csharp)
 ![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=flat&logo=sqlite)
 ![xUnit](https://img.shields.io/badge/Tests-xUnit-512BD4?style=flat)
